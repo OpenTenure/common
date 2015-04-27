@@ -3,16 +3,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
-        <artifactId>sola-main</artifactId>
-        <groupId>org.sola</groupId>
-        <version>1503a</version>
+        <artifactId>sola-cs-main</artifactId>
+        <groupId>org.sola.cs</groupId>
+        <version>1504a</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
-    <groupId>org.sola.common</groupId>
-    <artifactId>sola-common</artifactId>
+    <groupId>org.sola.cs.common</groupId>
+    <artifactId>sola-cs-common</artifactId>
     <packaging>jar</packaging>
-    <version>1503a</version>
-    <name>Common Utilities</name>
+    <version>1504a</version>
+    <name>Common CS Utilities</name>
     <build>
         <plugins>
             <plugin>
@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>sola-messaging</artifactId>
+            <artifactId>sola-cs-messaging</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>
