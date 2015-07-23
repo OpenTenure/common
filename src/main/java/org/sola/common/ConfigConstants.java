@@ -210,6 +210,10 @@ public class ConfigConstants {
      */
     public static final String MODERATION_DAYS = "moderation-days";
     /**
+     * Closing date for the claim moderation (public display).
+     */
+    public static final String MODERATION_DATE = "moderation_date";
+    /**
      * Account activation timeout in hours. After this time elapsed, activation
      * should expire.
      */
