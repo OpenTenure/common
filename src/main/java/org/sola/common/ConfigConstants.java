@@ -399,5 +399,19 @@ public class ConfigConstants {
     
     /** Full path to PostgreSQL utilities (bin) folder (e.g. C:\Program Files\PostgreSQL\9.1\bin). Used for backup/restore implementation of SOLA Web admin application */
     public static final String DB_UTILITIES_FOLDER = "db-utilities-folder";
+
+    /** Indicates whether spatial representation of the parcel is required. 1 - required, 0 - not required/ */
+    public static final String REQUIRES_SPATIAL = "requires_spatial";
     
+    /** Reporting server URL */
+    public static final String REPORT_SERVER_URL = "report_server_url";
+    
+    /** Reporting server user name. */
+    public static final String REPORT_SERVER_USER = "report_server_user";
+    
+    /** Reporting server user password. */
+    public static final String REPORT_SERVER_PASS = "report_server_pass";
+    
+    /** Folder URL on the reporting server containing reports to display on the menu. */
+    public static final String REPORTS_FOLDER_URL = "reports_folder_url";
 }
