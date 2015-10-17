@@ -33,7 +33,7 @@ import org.dozer.DozerConverter;
 import org.dozer.Mapper;
 import org.dozer.MapperAware;
 import org.sola.common.SOLAException;
-import org.sola.common.messaging.ServiceMessage;
+import org.sola.cs.common.messaging.ServiceMessage;
 
 /**
  * Non cumulative converter that correctly matches source items to destination items while

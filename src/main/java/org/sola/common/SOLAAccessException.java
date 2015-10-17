@@ -27,7 +27,7 @@
  */
 package org.sola.common;
 
-import org.sola.common.messaging.ServiceMessage;
+import org.sola.cs.common.messaging.ServiceMessage;
 
 /**
  * Used to throw exception in case of insufficient access rights

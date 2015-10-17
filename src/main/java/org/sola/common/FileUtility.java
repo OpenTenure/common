@@ -48,9 +48,9 @@ import javax.swing.ImageIcon;
 import org.apache.commons.io.FileUtils;
 import org.apache.sanselan.Sanselan;
 import org.jvnet.staxex.StreamingDataHandler;
-import org.sola.common.messaging.ClientMessage;
-import org.sola.common.messaging.MessageUtility;
-import org.sola.common.messaging.ServiceMessage;
+import org.sola.cs.common.messaging.ClientMessage;
+import org.sola.cs.common.messaging.MessageUtility;
+import org.sola.cs.common.messaging.ServiceMessage;
 
 /**
  * Provides static methods to manage various aspects related to the files.

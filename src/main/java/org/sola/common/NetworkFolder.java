@@ -35,7 +35,7 @@ import java.util.List;
 import jcifs.smb.NtlmPasswordAuthentication;
 import jcifs.smb.SmbFile;
 import org.sola.common.logging.LogUtility;
-import org.sola.common.messaging.ServiceMessage;
+import org.sola.cs.common.messaging.ServiceMessage;
 
 /**
  * Provides a facade to the File and the SmbFile classes. Used so that SOLA can

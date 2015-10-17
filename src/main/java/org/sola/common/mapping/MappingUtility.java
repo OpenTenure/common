@@ -36,7 +36,7 @@ import java.util.List;
 import org.dozer.Mapper;
 import org.dozer.MappingException;
 import org.sola.common.SOLAException;
-import org.sola.common.messaging.ServiceMessage;
+import org.sola.cs.common.messaging.ServiceMessage;
 
 /**
  * Basic utility class that provides some mapping related functions that may be useful to other
