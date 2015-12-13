@@ -414,4 +414,16 @@ public class ConfigConstants {
     
     /** Folder URL on the reporting server containing reports to display on the menu. */
     public static final String REPORTS_FOLDER_URL = "reports_folder_url";
+    
+    /** Custom Coordinate Reference System in WKT format of the map image, generated for claim certificate in OpenTenure */
+    public static final String OT_TITLE_PLAN_CRS_WKT = "ot-title-plan-crs-wkt";
+    
+    /** URL to the claim certificate report, hosted on the reporting server */
+    public static final String CLAIM_CERTIFICATE_URL = "claim_cetificate_report_url";
+    
+    /** Indicates whether reports are enabled or disabled. 1 - enabled, 0 - disabled */
+    public static final String REPORTS_ENABLED = "enable-reports";
+    
+    /** Community name */
+    public static final String COMMUNITY_NAME = "community-name";
 }
