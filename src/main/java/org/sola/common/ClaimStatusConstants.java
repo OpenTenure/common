@@ -19,4 +19,10 @@ public class ClaimStatusConstants {
     
     /** Unmoderated status of claim. */
     public static final String UNMODERATED = "unmoderated";
+    
+    /** Issued status of claim. */
+    public static final String ISSUED = "issued";
+    
+    /** Historic status of claim. */
+    public static final String HISTORIC = "historic";
 }

@@ -106,6 +106,7 @@ public class RolesConstants {
     public static final String CS_REVIEW_CLAIM = "ReviewClaim";
     public static final String CS_RECORD_CLAIM = "RecordClaim";
     public static final String CS_VIEW_REPORTS = "ViewReports";
+    public static final String CS_PRINT_CERTIFICATE = "PrintCertificate";
      // DATA SECURITY CLASSIFICATION
     public static final String CLASSIFICATION_CHANGE_CLASS = "ChangeSecClass";
     public static final String CLASSIFICATION_UNRESTRICTED = "01SEC_Unrestricted";
