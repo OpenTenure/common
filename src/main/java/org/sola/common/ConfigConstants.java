@@ -430,6 +430,18 @@ public class ConfigConstants {
     /** Community name */
     public static final String COMMUNITY_NAME = "community-name";
     
-     /** Documents required for issuing Community Certificate */
+    /** Documents required for issuing Community Certificate */
     public static final String DOCUMENTS_FOR_ISSUING_CERT = "docs-for-issuing-cert";
+    
+    /**  */
+    public static final String OT_TITLE_PLAN_CRS_PROJ4 = "ot-title-plan-crs-proj4";
+    
+    /**  */
+    public static final String BOUNDARY_PRINT_PRODUCED_BY = "boundary-print-produced-by";
+    
+    /**  */
+    public static final String BOUNDARY_PRINT_CRS_DESCRIPTION = "boundary-print-crs-description";
+    
+    /**  */
+    public static final String BOUNDARY_PRINT_COUNTRY_NAME = "boundary-print-country-name";
 }
