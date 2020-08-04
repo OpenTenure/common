@@ -61,18 +61,17 @@ import org.sola.cs.common.messaging.ServiceMessage;
  */
 public class FileUtility {
 
-    public final static String csv = "csv";
+    public final static String CSV = "csv";
     // Ticket #397 - use !! to delimit the location of path separators as an
     // alternative to the default ;. This is because SOLA uses ; as a special
     // path separator character when dealing with NetworkFolder. 
-    public final static String alternatePathSeparator = "!!";
-    private static long maxCacheSizeBytes = 200 * 1024 * 1024;
-    private static long resizedCacheSizeBytes = 120 * 1024 * 1024;
+    public final static String ALTERNATE_PATH_SEPARATOR = "!!";
+    private static long maxCacheSizeBytes = 200L * 1024 * 1024;
+    private static long resizedCacheSizeBytes = 120L * 1024 * 1024;
     private static int minNumberCachedFiles = 10;
-    private static long maxFileSizeBytes = 100 * 1024 * 1024;
+    private static long maxFileSizeBytes = 100L * 1024 * 1024;
     private static String cachePath = System.getProperty("user.home") + "/sola/cache/documents/";
-    private static final int BUFF_SIZE = 4096;
-
+    
     /**
      * Checks the cache to ensure it won't exceed the max size cache size. If
      * the new document will cause the cache to exceed the max size, the older
@@ -407,32 +406,39 @@ public class FileUtility {
             } else {
 
                 if (fileExt.equalsIgnoreCase("pdf")) {
+                    RandomAccessFile raf=null; FileChannel channel=null;
+                    try {
+                        raf = new RandomAccessFile(file, "r");
+                        channel = raf.getChannel();
+                        ByteBuffer buf = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
+                        PDFFile pdffile = new PDFFile(buf);
 
-                    RandomAccessFile raf = new RandomAccessFile(file, "r");
-                    FileChannel channel = raf.getChannel();
-                    ByteBuffer buf = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
-                    PDFFile pdffile = new PDFFile(buf);
+                        // draw the first page to an image
+                        PDFPage page = pdffile.getPage(0);
 
-                    // draw the first page to an image
-                    PDFPage page = pdffile.getPage(0);
+                        //generate the image
+                        //#319 Improve quality of the image preview by ensuring the whole page
+                        // is captured correctly post any rotation that may be required. 
+                        // Use a multiple of 3 to increase the image depth for better image
+                        // definition. 
+                        thumbnail = page.getImage(
+                                (int) page.getWidth() * 3,
+                                (int) page.getHeight() * 3,
+                                null, // null for the clip rectangle to ensure entire page is captured
+                                null,
+                                true, // fill background with white
+                                true // block until drawing is done
+                                );
 
-                    //generate the image
-                    //#319 Improve quality of the image preview by ensuring the whole page
-                    // is captured correctly post any rotation that may be required. 
-                    // Use a multiple of 3 to increase the image depth for better image
-                    // definition. 
-                    thumbnail = page.getImage(
-                            (int) page.getWidth() * 3,
-                            (int) page.getHeight() * 3,
-                            null, // null for the clip rectangle to ensure entire page is captured
-                            null,
-                            true, // fill background with white
-                            true // block until drawing is done
-                            );
-
-                    buf.clear();
-                    channel.close();
-                    raf.close();
+                        buf.clear();
+                    } finally {
+                        if (channel!=null) {
+                            channel.close();
+                        }
+                        if (raf!=null) {
+                            raf.close();
+                        }
+                    }
 
                 } else {
 
@@ -720,9 +726,7 @@ public class FileUtility {
             }
             out.flush();
         } finally {
-            if (in != null) {
-                in.close();
-            }
+            in.close();
             if (out != null) {
                 out.close();
             }
@@ -740,8 +744,9 @@ public class FileUtility {
     public static byte[] readFile(File file) throws IOException {
         byte[] result = null;
         if (file != null && file.exists()) {
-            FileInputStream in = new FileInputStream(file);
+            FileInputStream in=null;
             try {
+                in = new FileInputStream(file);
                 int length = (int) file.length();
                 result = new byte[length];
                 int offset = 0;
@@ -758,7 +763,9 @@ public class FileUtility {
                             new Object[]{"File could not be read", file.getName()});
                 }
             } finally {
-                in.close();
+                if (in!=null) {
+                    in.close();
+                }
             }
         }
         return result;

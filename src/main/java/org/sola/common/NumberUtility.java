@@ -32,6 +32,7 @@ package org.sola.common;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -65,7 +66,7 @@ public class NumberUtility {
     public static String formatAreaMetric(BigDecimal area) {
         String result = null;
         if (area != null && BigDecimal.ZERO.compareTo(area) < 0) {
-            NumberFormatter areaFormatter = new NumberFormatter(DecimalFormat.getNumberInstance());
+            NumberFormatter areaFormatter = new NumberFormatter(NumberFormat.getNumberInstance());
             try {
                 if (area.compareTo(new BigDecimal("10000")) >= 0) {
                     // The area is >= 10,000 so format as hectares
@@ -96,7 +97,7 @@ public class NumberUtility {
             // Use a Double because the BigDecimal division is unreliable
             result = "";
             Double area = areaDec.doubleValue();
-            NumberFormatter areaFormatter = new NumberFormatter(DecimalFormat.getNumberInstance());
+            NumberFormatter areaFormatter = new NumberFormatter(NumberFormat.getNumberInstance());
             try {
                 // 1a = 4046.8564 square metres
                 Double acresTmp = new Double(area / METRES_IN_ACRE);

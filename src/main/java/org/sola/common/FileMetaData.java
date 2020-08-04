@@ -41,9 +41,6 @@ public class FileMetaData {
     private Date modificationDate;
     private long fileSize;
 
-    public FileMetaData() {
-    }
-
     public String getName() {
         return name;
     }
