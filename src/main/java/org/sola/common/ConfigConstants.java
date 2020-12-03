@@ -430,6 +430,9 @@ public class ConfigConstants {
     /** Community name */
     public static final String COMMUNITY_NAME = "community-name";
     
+    /** Community Server URL */
+    public static final String CS_SERVER_URL = "cs_server_url";
+    
     /** Documents required for issuing Community Certificate */
     public static final String DOCUMENTS_FOR_ISSUING_CERT = "docs-for-issuing-cert";
     
