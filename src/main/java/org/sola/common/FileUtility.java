@@ -42,9 +42,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
-import javax.swing.ImageIcon;
+import jakarta.activation.DataHandler;
+import jakarta.activation.FileDataSource;
 import org.apache.commons.io.FileUtils;
 import org.apache.sanselan.Sanselan;
 import org.jvnet.staxex.StreamingDataHandler;
@@ -357,131 +356,6 @@ public class FileUtility {
     }
 
     /**
-     * Creates thumbnail image for the given file. Returns null if format is not
-     * supported.
-     *
-     * @param filePath The full path to the file.
-     * @param width Thumbnail width.
-     * @param height Thumbnail height.
-     */
-    public static BufferedImage createImageThumbnail(String filePath, int width, int height) {
-        try {
-            File file = new File(filePath);
-
-            if (!file.exists()) {
-                return null;
-            }
-
-            Image thumbnail = null;
-            String fileExt = getFileExtension(filePath);
-
-            if (fileExt.equalsIgnoreCase("jpg") || fileExt.equalsIgnoreCase("jpeg")) {
-
-                ImageIcon tmp = new ImageIcon(filePath);
-                if (tmp == null || tmp.getIconWidth() <= 0
-                        || tmp.getIconHeight() <= 0) {
-                    return null;
-                }
-
-                ImageIcon scaled = null;
-
-                if ((tmp.getIconWidth() > width && width > 0)
-                        || (tmp.getIconHeight() > height && height > 0)) {
-                    scaled = new ImageIcon(tmp.getImage().getScaledInstance(
-                            width, height, Image.SCALE_SMOOTH));
-                } else {
-                    scaled = tmp;
-                }
-
-                BufferedImage buffered = new BufferedImage(
-                        scaled.getIconWidth(),
-                        scaled.getIconHeight(),
-                        BufferedImage.TYPE_INT_RGB);
-                Graphics2D g = buffered.createGraphics();
-                g.drawImage(scaled.getImage(), 0, 0, null);
-                g.dispose();
-
-                return buffered;
-
-            } else {
-
-                if (fileExt.equalsIgnoreCase("pdf")) {
-                    RandomAccessFile raf=null; FileChannel channel=null;
-                    try {
-                        raf = new RandomAccessFile(file, "r");
-                        channel = raf.getChannel();
-                        ByteBuffer buf = channel.map(FileChannel.MapMode.READ_ONLY, 0, channel.size());
-                        PDFFile pdffile = new PDFFile(buf);
-
-                        // draw the first page to an image
-                        PDFPage page = pdffile.getPage(0);
-
-                        //generate the image
-                        //#319 Improve quality of the image preview by ensuring the whole page
-                        // is captured correctly post any rotation that may be required. 
-                        // Use a multiple of 3 to increase the image depth for better image
-                        // definition. 
-                        thumbnail = page.getImage(
-                                (int) page.getWidth() * 3,
-                                (int) page.getHeight() * 3,
-                                null, // null for the clip rectangle to ensure entire page is captured
-                                null,
-                                true, // fill background with white
-                                true // block until drawing is done
-                                );
-
-                        buf.clear();
-                    } finally {
-                        if (channel!=null) {
-                            channel.close();
-                        }
-                        if (raf!=null) {
-                            raf.close();
-                        }
-                    }
-
-                } else {
-
-                    BufferedImage img = Sanselan.getBufferedImage(file);
-                    thumbnail = Toolkit.getDefaultToolkit().createImage(img.getSource());
-
-                }
-
-                if (thumbnail == null || thumbnail.getWidth(null) <= 0
-                        || thumbnail.getHeight(null) <= 0) {
-                    return null;
-                }
-
-                Image scaled = null;
-
-                if ((thumbnail.getWidth(null) > width && width > 0)
-                        || (thumbnail.getHeight(null) > height && height > 0)) {
-                    scaled = thumbnail.getScaledInstance(
-                            width, height, Image.SCALE_SMOOTH);
-                } else {
-                    scaled = thumbnail;
-                }
-
-                BufferedImage buffered = new BufferedImage(
-                        scaled.getWidth(null),
-                        scaled.getHeight(null),
-                        BufferedImage.TYPE_INT_RGB);
-                Graphics2D g = buffered.createGraphics();
-                g.drawImage(scaled, 0, 0, null);
-                g.dispose();
-
-                return buffered;
-            }
-
-        } catch (Exception e) {
-            // Most likely the a thumbnail cannot be generated for the file type. Ignore the
-            // exception and continue. 
-            System.out.println("Unable to generate thumbnail - " + e.getMessage());
-        }
-        return null;
-    }
-
-    /**
      * Removes path separator characters (i.e. / and \) from the fileName. Used
      * to ensure user input does not redirect files to an unsafe locations. Also
      * replaces the extension for any file with an executable file extension
@@ -553,64 +427,6 @@ public class FileUtility {
         return sanitizeFileName(fileName, true);
     }
 
-    /**
-     * Saves a data stream from a {@linkplain DataHandler} to the specified
-     * file. Used to allow more efficient management of large file transfers
-     * between the SOLA client(s) and the web services.
-     *
-     * <p>
-     * If the DataHandler is a {@linkplain StreamingDataHandler}, then the
-     * {@linkplain StreamingDataHandler#moveTo(java.io.File)} method is used to
-     * save the file to disk. Otherwise the InputStream from the DataHandler is
-     * written to disk using
-     * {@linkplain #writeFileToCache(java.io.InputStream, java.io.File) writeFileToCache}.</p>
-     *
-     * <p>
-     * Note that file streaming is not currently supported if Metro security is
-     * used. Refer to http://java.net/jira/browse/WSIT-1081 for details. Using
-     * Security also substantially increases the memory required to handle large
-     * files with a practical limit around 15MB to 20MB.</p>
-     *
-     * @param dataHandler The dataHandler representing the file.
-     * @param fileName The name of the file to write the DataHander stream to.
-     * If null a random file name will be generated for the stream.
-     * @return The file name used to save the file data. This may differ from
-     * the fileName passed in if the fileName was null or it included invalid
-     * characters (e.g. / \). Will return null if the dataHandler is null;
-     */
-    public static String saveFileFromStream(DataHandler dataHandler, String fileName) {
-        if (dataHandler == null) {
-            return null;
-        }
-        if (fileName == null) {
-            fileName = generateFileName();
-        } else {
-            fileName = sanitizeFileName(fileName, true);
-        }
-        String filePathName = getCachePath() + File.separator + fileName;
-        File file = new File(filePathName);
-        deleteFile(file);
-        try {
-            if (dataHandler instanceof StreamingDataHandler) {
-                StreamingDataHandler sdh = null;
-                try {
-                    sdh = (StreamingDataHandler) dataHandler;
-                    sdh.moveTo(file);
-                } finally {
-                    if (sdh != null) {
-                        sdh.close();
-                    }
-                }
-            } else {
-                writeFile(dataHandler.getInputStream(), file);
-            }
-            maintainCache(new File(getCachePath()), 0);
-        } catch (Exception ex) {
-            throw new SOLAException(ServiceMessage.GENERAL_UNEXPECTED_ERROR_DETAILS,
-                    new Object[]{"Saving file " + fileName, ex.getLocalizedMessage(), ex});
-        }
-        return fileName;
-    }
 
     /**
      * Creates a {@linkplain DataHandler} for a file located on the local file
@@ -633,17 +449,6 @@ public class FileUtility {
                     new String[]{filePathName});
         }
         return result;
-    }
-
-    /**
-     * Creates a {@linkplain DataHandler} for a byte array representing the
-     * content of a file. Also configures the MIME type to ensure the content is
-     * correctly mapped as a DataHander.
-     *
-     * @param fileContent The byte array containing the file content.
-     */
-    public static DataHandler getFileAsStream(byte[] fileContent) {
-        return new DataHandler(new ByteArrayDataSource(fileContent, "application/octet-stream"));
     }
 
     /**

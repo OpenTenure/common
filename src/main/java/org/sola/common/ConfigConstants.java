@@ -71,6 +71,12 @@ public class ConfigConstants {
      * the SharedFolderCleaner service.
      */
     public static final String CLEAN_NETWORK_SCAN_FOLDER = "clean-network-scan-folder";
+    
+    /**
+     * Report id from system.report table, referencing claim certificate.
+     */
+    public static final String CLAIM_CERTIFICATE_ID = "claim-certificate-id";
+    
     /**
      * network-scan-folder-domain - The domain of the user account that should
      * be used to connect to the network scan folder. Required if the network
@@ -394,45 +400,37 @@ public class ConfigConstants {
      */
     public static final String EMAIL_SERVICE_INTERVAL = "email-service-interval";
     
-    /** Open Tenure community area where parcels can be claimed */
-    public static final String OT_COMMUNITY_AREA = "ot-community-area";
-    
     /** Indicates whether Community Server is connected to the Internet or not. 0 - connected, 1 - not connected. */
     public static final String OT_OFFLINE_MODE = "offline-mode";
     
     /** Full path to PostgreSQL utilities (bin) folder (e.g. C:\Program Files\PostgreSQL\9.1\bin). Used for backup/restore implementation of SOLA Web admin application */
     public static final String DB_UTILITIES_FOLDER = "db-utilities-folder";
 
-    /** Indicates whether spatial representation of the parcel is required. 1 - required, 0 - not required/ */
+    /** Indicates whether spatial representation of the parcel is required. 1 - required, 0 - not required */
     public static final String REQUIRES_SPATIAL = "requires_spatial";
     
-    /** Reporting server URL */
-    public static final String REPORT_SERVER_URL = "report_server_url";
-    
-    /** Reporting server user name. */
-    public static final String REPORT_SERVER_USER = "report_server_user";
-    
-    /** Reporting server user password. */
-    public static final String REPORT_SERVER_PASS = "report_server_pass";
-    
-    /** Folder URL on the reporting server containing reports to display on the menu. */
-    public static final String REPORTS_FOLDER_URL = "reports_folder_url";
+    /** Relative or absolute path to the reports folder. */
+    public static final String REPORTS_FOLDER_PATH = "reports-folder-path";
     
     /** Custom Coordinate Reference System in WKT format of the map image, generated for claim certificate in OpenTenure */
     public static final String OT_TITLE_PLAN_CRS_WKT = "ot-title-plan-crs-wkt";
     
-    /** URL to the claim certificate report, hosted on the reporting server */
-    public static final String CLAIM_CERTIFICATE_URL = "claim_certificate_report_url";
+    /** Flag to use google maps as a background for the certificate */
+    public static final String OT_USE_BACKGROUND_GOOGLE_MAP = "ot-use-background-google-map";
     
-    /** Indicates whether reports are enabled or disabled. 1 - enabled, 0 - disabled */
-    public static final String REPORTS_ENABLED = "enable-reports";
+    /** Flag to use WMS layer as a background for the certificate */
+    public static final String OT_USE_BACKGROUND_WMS_MAP = "ot-use-background-wms-map";
+    
+    /** WMS server (e.g. GeoServer) URL */
+    public static final String OT_WMS_SERVER_URL = "ot-wms-server-url";
+    
+    /** WMS background layer name */
+    public static final String OT_WMS_BG_LAYER_NAME = "ot-wms-bg-layer-name";
+    
     
     /** Community name */
     public static final String COMMUNITY_NAME = "community-name";
-    
-    /** Community Server URL */
-    public static final String CS_SERVER_URL = "cs_server_url";
-    
+        
     /** Documents required for issuing Community Certificate */
     public static final String DOCUMENTS_FOR_ISSUING_CERT = "docs-for-issuing-cert";
     
@@ -447,4 +445,7 @@ public class ConfigConstants {
     
     /**  */
     public static final String BOUNDARY_PRINT_COUNTRY_NAME = "boundary-print-country-name";
+    
+    /** Default project language locale, which should be used for reports generation.  */
+    public static final String PROJECT_LANGUAGE = "project-language";
 }
